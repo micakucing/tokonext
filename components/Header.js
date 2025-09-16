@@ -21,9 +21,9 @@ export default function Header() {
   useEffect(() => {
 
  const unsubscribe = onAuthStateChanged(auth, async (user) => {
+                 setUser(user)
 
       if (user) {
-                 setUser(user)
 
         const userDoc = await getDoc(doc(db, 'admins', user.uid));
         if (userDoc.exists() && userDoc.data().role === 'admin') {
@@ -57,13 +57,11 @@ export default function Header() {
             <Nav.Link as={Link} href="/cart">
               Keranjang ({totalItems})
             </Nav.Link>
-            {isAdmin ? (
+            {user ? (
               <>
-                <span className="me-2">Admin</span>
-                <Button variant="outline-danger" onClick={handleLogout}>Keluar</Button>
+                 <Button variant="outline-danger" onClick={handleLogout}>Keluar</Button>
               </>
-            ) : user ? (
-              <Button variant="outline-danger" onClick={handleLogout}>Keluar</Button>
+
             ) : (
               <Button variant="outline-primary" onClick={() => router.push('/admin/login')}>masuk</Button>
             )}
