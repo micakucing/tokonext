@@ -4,8 +4,11 @@ import { useCart } from '../context/CartContext'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 import { onAuthStateChanged } from 'firebase/auth'
-import { auth, logout } from '../lib/firebase'
+import { auth, logout, db } from '../lib/firebase'
 import SearchBar from './searchbar'
+import { doc, getDoc } from "firebase/firestore"
+
+
 export default function Header() {
   const [user, setUser] = useState(null)
   const [isAdmin, setIsAdmin] = useState(false)
@@ -13,25 +16,35 @@ export default function Header() {
   const { cart } = useCart()
   const totalItems = cart?.length || 0
   const totalPrice = cart?.reduce((sum, item) => sum + (item.price || 0), 0) || 0
+
+
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser)
 
-      // cek apakah admin (misal admin email: admin@example.com)
-      if (currentUser && currentUser.email === 'admin@example.com') {
-        setIsAdmin(true)
+ const unsubscribe = onAuthStateChanged(auth, async (user) => {
+
+      if (user) {
+                 setUser(user)
+
+        const userDoc = await getDoc(doc(db, 'admins', user.uid));
+        if (userDoc.exists() && userDoc.data().role === 'admin') {
+         // fetchDashboardData();
+         setIsAdmin(true)
+        } else {
+         // router.push('/admin/');
+         setIsAdmin(false)
+        }
       } else {
-        setIsAdmin(false)
+        //router.push('/admin/login');
       }
-    })
-
-    return () => unsubscribe()
-  }, [])
+    //  setLoading(false);
+    });
+    return () => unsubscribe();
+  }, [router]);
 
 
   const handleLogout = async () => {
     await logout()
-    router.push('/admin/login')
+    router.push('/admin/login');
   }
   return (
     <Navbar bg="light" expand="lg" className="mb-4">

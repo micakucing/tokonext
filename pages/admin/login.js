@@ -20,7 +20,7 @@ export default function AdminLogin() {
       const allowed = await isAdmin(userEmail)
 
       if (allowed) {
-        router.push('/admin')
+        router.push('/admin/')
       } else {
         setError('Akses ditolak. Anda bukan admin.')
         await signOut(auth)
@@ -29,6 +29,10 @@ export default function AdminLogin() {
       setError('Email atau password salah')
     }
   }
+
+
+
+  
 
   return (
     <Container className="mt-5" style={{ maxWidth: '400px' }}>

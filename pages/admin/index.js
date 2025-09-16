@@ -1,53 +1,17 @@
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { Table, Button } from "react-bootstrap"
-import { db } from "../../lib/firebase"
-import { collection, getDocs, deleteDoc, doc } from "firebase/firestore"
-import { getAuth } from 'firebase/auth'
-import nookies from 'nookies'
+import { db, auth } from "../../lib/firebase"
+import { collection, getDocs, deleteDoc, doc, getDoc } from "firebase/firestore"
+ import { onAuthStateChanged } from "firebase/auth";
+//import { isAdmin } from '../../lib/adminService'
 
-export async function getServerSideProps(context) {
-  try {
-    const cookies = nookies.get(context) // ambil cookies
-    const token = cookies.token || null
-
-    // Jika token tidak ada → redirect ke login
-    if (!token) {
-      return {
-        redirect: {
-          destination: '/admin/login',
-          permanent: false
-        }
-      }
-    }
-
-    // Bisa juga decode token dan cek email admin
-    const adminEmails = ['admin@admin.com'] // daftar admin
-    if (!adminEmails.includes(token.email)) {
-      return {
-        redirect: {
-          destination: '/admin/login',
-          permanent: false
-        }
-      }
-    }
-
-    return {
-      props: {} // user valid, render halaman admin
-    }
-  } catch (error) {
-    return {
-      redirect: {
-        destination: '/admin/login',
-        permanent: false
-      }
-    }
-  }
-}
+  import { useRouter } from 'next/router';
 
 export default function AdminDashboard() {
   const [products, setProducts] = useState([])
-
+  const router = useRouter();
+ 
   const fetchProducts = async () => {
     const querySnapshot = await getDocs(collection(db, "product"))
     setProducts(querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })))
@@ -55,14 +19,28 @@ export default function AdminDashboard() {
 
   const handleDelete = async (id) => {
     if (confirm("Yakin ingin menghapus produk ini?")) {
-      await deleteDoc(doc(db, "products", id))
+      await deleteDoc(doc(db, "product", id))
       fetchProducts()
     }
   }
 
   useEffect(() => {
-    fetchProducts()
-  }, [])
+        fetchProducts();
+
+      const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const userDoc = await getDoc(doc(db, 'admins', user.uid));
+        if (userDoc.exists() && userDoc.data().role === 'admin') {
+        } else {
+          router.push('/admin/');
+        }
+      } else {
+        router.push('/admin/login');
+      }
+      //setLoading(false);
+    });
+    return () => unsubscribe();
+  }, [router])
 
   return (
     <div className="container mt-4">
