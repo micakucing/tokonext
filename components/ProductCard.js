@@ -20,11 +20,11 @@ export default function ProductCard({ product }) {
         <div className="mt-auto d-flex justify-content-between">
           <Link href={`/product/${product.id}`} passHref>
             <Button variant="outline-primary" size="sm">
-              Detail
+              Detail Produk
             </Button>
           </Link>
           <Button variant="primary" size="sm" onClick={() => addToCart(product)}>
-            Tambah
+            Tambah Ke Keranjang
           </Button>
         </div>
       </Card.Body>

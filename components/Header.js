@@ -39,24 +39,24 @@ export default function Header() {
         <Navbar.Brand as={Link} href="/">Toko Online</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto">
+          <Nav className="ms-auto">
 
             <Nav.Link as={Link} href="/cart">
-              Cart ({totalItems})
+              Keranjang ({totalItems})
             </Nav.Link>
             {isAdmin ? (
               <>
                 <span className="me-2">Admin</span>
-                <Button variant="outline-danger" onClick={handleLogout}>Logout</Button>
+                <Button variant="outline-danger" onClick={handleLogout}>Keluar</Button>
               </>
             ) : user ? (
-              <Button variant="outline-danger" onClick={handleLogout}>Logout</Button>
+              <Button variant="outline-danger" onClick={handleLogout}>Keluar</Button>
             ) : (
-              <Button variant="outline-primary" onClick={() => router.push('/admin/login')}>Login</Button>
+              <Button variant="outline-primary" onClick={() => router.push('/admin/login')}>masuk</Button>
             )}
             <SearchBar className="me-3" />
           </Nav>
-          
+
         </Navbar.Collapse>
       </Container>
     </Navbar>

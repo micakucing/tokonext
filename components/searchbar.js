@@ -20,13 +20,13 @@ export default function SearchBar() {
     <Form className="d-flex mt-4 mt-xl-0 ms-0 ms-xl-3" onSubmit={handleSearch}>
       <Form.Control
         type="text"
-        placeholder="Search products..."
+        placeholder="Cari Produk..."
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         className="me-2"
       />
       <Button type="submit" variant="primary">
-        Search
+        Cari
       </Button>
     </Form>
   )
