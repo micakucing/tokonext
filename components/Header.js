@@ -20,23 +20,23 @@ export default function Header() {
 
   useEffect(() => {
 
- const unsubscribe = onAuthStateChanged(auth, async (user) => {
-                 setUser(user)
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      setUser(user)
 
       if (user) {
 
         const userDoc = await getDoc(doc(db, 'admins', user.uid));
         if (userDoc.exists() && userDoc.data().role === 'admin') {
-         // fetchDashboardData();
-         setIsAdmin(true)
+          // fetchDashboardData();
+          setIsAdmin(true)
         } else {
-         // router.push('/admin/');
-         setIsAdmin(false)
+          // router.push('/admin/');
+          setIsAdmin(false)
         }
       } else {
         //router.push('/admin/login');
       }
-    //  setLoading(false);
+      //  setLoading(false);
     });
     return () => unsubscribe();
   }, [router]);
@@ -59,7 +59,7 @@ export default function Header() {
             </Nav.Link>
             {user ? (
               <>
-                 <Button variant="outline-danger" onClick={handleLogout}>Keluar</Button>
+                <Button variant="outline-danger" onClick={handleLogout}>Keluar</Button>
               </>
 
             ) : (

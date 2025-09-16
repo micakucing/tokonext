@@ -1,8 +1,9 @@
-import { useState } from "react"
-import { db } from "../../lib/firebase"
-import { collection, addDoc } from "firebase/firestore"
+import { useEffect, useState } from "react"
+import { db, auth } from "../../lib/firebase"
+import { collection, addDoc, getDoc, doc } from "firebase/firestore"
 import { useRouter } from "next/router"
 import { Button } from "react-bootstrap"
+ import { onAuthStateChanged } from "firebase/auth";
 
 const toBase64 = (file) =>
   new Promise((resolve, reject) => {
@@ -14,6 +15,27 @@ const toBase64 = (file) =>
 
 export default function AddProduct() {
   const router = useRouter()
+
+
+  useEffect(() => {
+          //fetchProducts();
+  
+        const unsubscribe = onAuthStateChanged(auth, async (user) => {
+        if (user) {
+          const userDoc = await getDoc(doc(db, 'admins', user.uid));
+          if (userDoc.exists() && userDoc.data().role === 'admin') {
+          } else {
+            router.push('/admin/add');
+          }
+        } else {
+          router.push('/admin/login');
+        }
+        //setLoading(false);
+      });
+      return () => unsubscribe();
+    }, [])
+
+
   const [form, setForm] = useState({
     name: "",
     price: "",

@@ -40,7 +40,7 @@ export default function AdminDashboard() {
       //setLoading(false);
     });
     return () => unsubscribe();
-  }, [router])
+  }, [])
 
   return (
     <div className="container mt-4">

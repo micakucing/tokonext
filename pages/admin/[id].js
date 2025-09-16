@@ -1,8 +1,9 @@
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
-import { db } from "../../lib/firebase"
+import { db, auth } from "../../lib/firebase"
 import { doc, getDoc, updateDoc } from "firebase/firestore"
 import { Button, Spinner } from "react-bootstrap"
+ import { onAuthStateChanged } from "firebase/auth";
 
 const toBase64 = (file) =>
   new Promise((resolve, reject) => {
@@ -28,6 +29,25 @@ export default function EditProduct() {
   const [saving, setSaving] = useState(false)
 
   useEffect(() => {
+          //fetchProducts();
+  
+        const unsubscribe = onAuthStateChanged(auth, async (user) => {
+        if (user) {
+          const userDoc = await getDoc(doc(db, 'admins', user.uid));
+          if (userDoc.exists() && userDoc.data().role === 'admin') {
+          } else {
+            router.push(`/admin/${id}`);
+          }
+        } else {
+          router.push('/admin/login');
+        }
+        //setLoading(false);
+      });
+      return () => unsubscribe();
+    }, [])
+
+  useEffect(() => {
+    
     if (!id) return
     const fetchProduct = async () => {
       const docRef = doc(db, "product", id)
@@ -44,7 +64,15 @@ export default function EditProduct() {
       setLoading(false)
     }
     fetchProduct()
+
+    
   }, [id])
+
+
+
+
+   
+
 
   const handleSubmit = async (e) => {
     e.preventDefault()
