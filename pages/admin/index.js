@@ -51,7 +51,7 @@ export default function AdminDashboard() {
         </Link>
       </div>
 
-      <Table striped bordered hover>
+      <Table striped bordered hover className="table-responsive">
         <thead>
           <tr>
             <th>Nama</th>
