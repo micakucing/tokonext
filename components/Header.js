@@ -49,7 +49,7 @@ export default function Header() {
   return (
     <Navbar bg="light" expand="lg" className="mb-4">
       <Container className="mt-4 mb-4">
-        <Navbar.Brand as={Link} href="/">Toko Online</Navbar.Brand>
+        <Navbar.Brand as={Link} href="/">Clopzkitchen</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
