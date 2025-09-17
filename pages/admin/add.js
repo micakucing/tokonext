@@ -71,7 +71,7 @@ export default function AddProduct() {
   }
 
   return (
-    <div className="container mt-4">
+    <div className="container mt-4 mb-4">
       <h3>Tambah Produk</h3>
       <form onSubmit={handleSubmit}>
         {/* Nama Produk */}

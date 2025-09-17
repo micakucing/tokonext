@@ -112,7 +112,8 @@ export default function AdminDashboard() {
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { db, auth } from "../../lib/firebase"
-import {  collection,
+import {
+  collection,
   query,
   orderBy,
   limit,
@@ -120,7 +121,8 @@ import {  collection,
   startAfter,
   where,
   doc,
-  deleteDoc,getDoc } from "firebase/firestore"
+  deleteDoc, getDoc
+} from "firebase/firestore"
 import { onAuthStateChanged } from "firebase/auth";
 import { useRouter } from 'next/router';
 
@@ -246,9 +248,9 @@ export default function AddProduct() {
   return (
     <div className="container mt-4">
       <h3 className="mb-3">Daftar Produk</h3>
- <Link href="/admin/add" className="btn btn-primary mb-3">
-          Tambah Produk
-        </Link>
+      <Link href="/admin/add" className="btn btn-primary mb-3">
+        Tambah Produk
+      </Link>
       {/* Search Form */}
       <form className="d-flex mb-3" onSubmit={handleSearch}>
         <input

@@ -59,6 +59,8 @@ export default function Header() {
             </Nav.Link>
             {user ? (
               <>
+                <Button variant="outline-primary ms-0 me-0 mb-3 mb-xl-0 mt-3 mt-xl-0 ms-xl-2 me-xl-3" onClick={() => router.push('/admin/')}>Dashboard</Button>
+
                 <Button variant="outline-danger" onClick={handleLogout}>Keluar</Button>
               </>
 
